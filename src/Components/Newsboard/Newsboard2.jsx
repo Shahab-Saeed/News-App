@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Newsitem from "../Newsitem/Newsitem";
+import axios from "axios";
 
 const Newsboard = (props) => {
   const [articles, setArticles] = useState([]);
 
+
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch(
-          `https://newsapi.org/v2/top-headlines?country=us&category=${
-            props.catagory
-          }&apiKey=${import.meta.env.VITE_API_KEY}`
+        const response = await axios.get(
+          `https://newsapi.org/v2/top-headlines?country=us&category=${props.catagory}&apiKey=${import.meta.env.VITE_API_KEY}`
         );
-        const data = await response.json();
-        setArticles(data.articles || []); // Fallback to an empty array if undefined
+        setArticles(response.data.articles || []);
       } catch (error) {
         console.error("Error fetching data:", error);
         setArticles([]);
       }
     };
-
     fetchArticles();
   }, [props.catagory]);
 
