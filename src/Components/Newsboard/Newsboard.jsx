@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import Newsitem from '../Newsitem/Newsitem'
+import axios from 'axios'
 
 const Newsboard = (props) => {
   const [articles, setArticles] = useState([])
 
-  useEffect(() => {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=${props.catagory}&apiKey=${import.meta.env.VITE_API_KEY}`
-    fetch(url).then(response=>response.json()).then(data=>setArticles(data.articles))
+  useEffect( async() => {
+    const response=await axios.get(`https://newsapi.org/v2/top-headlines?country=us&category=${props.catagory}&apiKey=${import.meta.env.VITE_API_KEY}`)
+    setArticles(response.data)
+    // fetch(url).then(response=>response.json()).then(data=>setArticles(data.articles))
    
   }, [props.catagory])
   
